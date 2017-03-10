@@ -5,11 +5,15 @@ import re
 from readability import Document
 
 class NewsArticle:
-    def __init__(self, title, body, raw):
+    def __init__(self, title, body, url, raw):
         self.title = title
         self.body = body
+        self.url = url
         self.raw = raw
 
+def remove_url_extras(url):
+    return url.split('?')[0]
+        
 def get_webpage_data(url):
     response = requests.get(url)
     doc = Document(response.text)
@@ -35,7 +39,7 @@ def article_from_url(url):
     try:
         raw = get_webpage_data(url)
         body = clean_up_document_body(raw)
-        return NewsArticle(raw.title(), body, raw.input)
+        return NewsArticle(raw.title(), body, remove_url_extras(url), raw.input)
     except Exception as e:
         print("Could not extract news data from url! Probably a bad URL!")
         print(e)
