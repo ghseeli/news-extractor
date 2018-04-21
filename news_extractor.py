@@ -4,6 +4,13 @@ import requests
 import re
 from readability import Document
 
+class Webpage:
+    def __init__(self, url):
+        self.url = url
+        self.document = get_webpage_data(url)
+    def content(self):
+        return self.document.content()
+
 class NewsArticle:
     def __init__(self, title, body, url, raw):
         self.title = title
